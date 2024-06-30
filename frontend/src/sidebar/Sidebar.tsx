@@ -36,13 +36,13 @@ import {
   
     return (
       <nav className="h-full flex flex-col bg-card border-r shadow-sm text-lg">
-        <div className="p-4 pb-2 flex justify-between items-center">
+        <div className="p-4 pb-2 flex justify-between items-center ">
           <div
             className={`font-bold text-3xl overflow-hidden transition-all ${
               expanded ? "w-40" : "w-0"
             }`}
           >
-            TransTime
+            GoUSA
           </div>
           <button
             onClick={() => setExpanded((curr) => !curr)}
@@ -105,7 +105,7 @@ import {
           />
           <div
             className={`
-                flex justify-between items-center
+                flex justify-between items-center 
                 overflow-hidden transition-all ${expanded ? "w-32 ml-3" : "w-0"}
             `}
           >

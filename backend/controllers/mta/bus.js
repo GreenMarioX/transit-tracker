@@ -1,23 +1,32 @@
+
 const cleanMTABusData = require('./helpers/bus-data-cleaner');
 
 let busData = null;
+let currentStopId = 502185;
 
-const fetchBusData = async (stopID) => {
+const fetchBusData = async (stopId) => {
   try {
-    const response = await fetch('https://bustime.mta.info/api/siri/stop-monitoring.json?key=b1af2818-ea0d-4b2f-b632-5119632b6ae3&OperatorRef=MTA&MonitoringRef=' + stopID);
+    const URL = `https://bustime.mta.info/api/siri/stop-monitoring.json?key=b1af2818-ea0d-4b2f-b632-5119632b6ae3&OperatorRef=MTA&MonitoringRef=${encodeURIComponent(stopId)}`
+    const response = await fetch(URL);
     if (!response.ok) {
       throw new Error('Network response was not ok');
-    }   
-    busData = await response.json();
-    // console.log(cleanMTABusData(busData))
+    }
+    const data = await response.json();
+    // Check if the data contains an error for a different stop ID
+    if (data && data.Siri && data.Siri.ServiceDelivery && data.Siri.ServiceDelivery.StopMonitoringDelivery) {
+      busData = data;
+    } else {
+      console.error('Received invalid data format from MTA API');
+    }
   } catch (error) {
     console.error('Fetching data failed', error);
   }
 };
 
-// Fetch data initially and then every 30 seconds
-fetchBusData(502184);
-setInterval(() => fetchBusData(502184), 30000);
+exports.setStopId = async (stopId) => {
+  currentStopId = stopId;
+  await fetchBusData(stopId); // Fetch data immediately when stopId changes
+};
 
 exports.getBusData = (req, res) => {
   if (busData) {

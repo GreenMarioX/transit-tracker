@@ -1,18 +1,23 @@
 
 function cleanMTABusData(siriData) {
 
-
     ResponseTimestampRoute = siriData.Siri.ServiceDelivery.ResponseTimestamp
     responseTime = formatDateTime(ResponseTimestampRoute)
-    
     newMonitoredStopVisit = []
-    for (let i = 0; i < siriData.Siri.ServiceDelivery.StopMonitoringDelivery[0].MonitoredStopVisit.length; i++) {
-        newMonitoredStopVisit.push(formatMonitoredVehicleJourney(siriData.Siri.ServiceDelivery.StopMonitoringDelivery[0].MonitoredStopVisit[i].MonitoredVehicleJourney))
+    if (siriData && siriData.Siri && siriData.Siri.ServiceDelivery &&
+        siriData.Siri.ServiceDelivery.StopMonitoringDelivery &&
+        siriData.Siri.ServiceDelivery.StopMonitoringDelivery[0] &&
+        siriData.Siri.ServiceDelivery.StopMonitoringDelivery[0].MonitoredStopVisit) {
+
+        for (let i = 0; i < siriData.Siri.ServiceDelivery.StopMonitoringDelivery[0].MonitoredStopVisit.length; i++) {
+            newMonitoredStopVisit.push(formatMonitoredVehicleJourney(siriData.Siri.ServiceDelivery.StopMonitoringDelivery[0].MonitoredStopVisit[i].MonitoredVehicleJourney))
+        }
     }
     
     stopData = {
         DataReceivedTime: responseTime,
         MonitoredStopVisit: newMonitoredStopVisit
+        
     };
     
     return stopData
