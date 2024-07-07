@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+
 import { useContext } from "react";
 import { SidebarContext } from "./Sidebar";
 
@@ -14,7 +14,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
   text,
   active,
   alert,
-}) => {
+}: SidebarItemProps) => {
   const { expanded } = useContext(SidebarContext);
   return (
     <li
@@ -22,26 +22,23 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
           relative flex items-center py-2 px-3 my-1
           font-medium rounded-md cursor-pointer
           transition-colors group
-          ${
-            active
-              ? "bg-gradient-to-tr from-secondary to-secondary text-secondary-foreground"
-              : "hover:bg-accent hover:text-accent-foreground text-muted-foreground"
-          }
+          ${active
+          ? "bg-gradient-to-tr from-secondary to-secondary text-secondary-foreground"
+          : "hover:bg-accent hover:text-accent-foreground text-muted-foreground"
+        }
       `}
     >
       {icon}
       <span
-        className={`overflow-hidden transition-all ${
-          expanded ? "w-30 ml-3" : "w-0" // <- This is where I change the width of the bar
-        }`}
+        className={`overflow-hidden transition-all ${expanded ? "w-30 ml-3" : "w-0" // <- This is where I change the width of the bar
+          }`}
       >
         {text}
       </span>
       {alert && (
         <div
-          className={`absolute right-2 w-2 h-2 rounded bg-indigo-400 ${
-            expanded ? "" : "top-2"
-          }`}
+          className={`absolute right-2 w-2 h-2 rounded bg-indigo-400 ${expanded ? "" : "top-2"
+            }`}
         />
       )}
 

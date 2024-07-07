@@ -22,34 +22,34 @@ const fetchStopData = async (stopId) => {
 };
 
 const getStopsData = async (idList) => {
-    const stopData = [];
-  
-    try {
-      // Iterate over idList with a for loop to ensure sequential processing
-      for (let i = 0; i < idList.length; i++) {
-        const stopId = idList[i];
-        try {
-          const stopInfo = await fetchStopData(stopId);
-          if (stopInfo) {
-            stopData.push({
-              id: stopInfo.id[0],
-              name: stopInfo.name[0],
-              longitude: stopInfo.lon ? parseFloat(stopInfo.lon[0]) : 0,
-              latitude: stopInfo.lat ? parseFloat(stopInfo.lat[0]) : 0,
-              direction: stopInfo.direction ? parseFloat(stopInfo.direction[0]) : 0,
-              code: stopInfo.code[0],
-              locationType: stopInfo.locationType[0]
-            });
-          }
-        } catch (error) {
-          console.error(`Error fetching data for stop ID ${stopId}:`, error);
+  const stopData = [];
+
+  try {
+    // Iterate over idList with a for loop to ensure sequential processing
+    for (let i = 0; i < idList.length; i++) {
+      const stopId = idList[i];
+      try {
+        const stopInfo = await fetchStopData(stopId);
+        if (stopInfo) {
+          stopData.push({
+            id: stopInfo.id[0],
+            name: stopInfo.name[0],
+            longitude: stopInfo.lon ? parseFloat(stopInfo.lon[0]) : 0,
+            latitude: stopInfo.lat ? parseFloat(stopInfo.lat[0]) : 0,
+            direction: stopInfo.direction ? parseFloat(stopInfo.direction[0]) : 0,
+            code: stopInfo.code[0],
+            locationType: stopInfo.locationType[0]
+          });
         }
+      } catch (error) {
+        console.error(`Error fetching data for stop ID ${stopId}:`, error);
       }
-    } catch (error) {
-      console.error('Error fetching stop data:', error);
     }
-    return stopData;
-  };
+  } catch (error) {
+    console.error('Error fetching stop data:', error);
+  }
+  return stopData;
+};
 
 const cleanMTAStopsData = async (stopsData) => {
   const newStopsData = {
@@ -63,7 +63,6 @@ const cleanMTAStopsData = async (stopsData) => {
   // Fetch and populate stop data for zero direction stops
   const zeroDirStopsIds = stopsData.data.entry.stopGroupings[0].stopGroups[0].stopIds;
   newStopsData.zeroDirStopsData = await getStopsData(zeroDirStopsIds);
-  console.log(newStopsData)
   // Fetch and populate stop data for one direction stops
   if (stopsData?.data?.entry?.stopGroupings[0]?.stopGroups[1]?.stopIds) {
     const oneDirStopsIds = stopsData.data.entry.stopGroupings[0].stopGroups[1].stopIds;

@@ -8,7 +8,7 @@ const fetchBusStopData = async (busRoute) => {
         const response = await fetch(url);
         if (!response.ok) {
             throw new Error('Network response was not ok');
-        }   
+        }
         busStopData = await response.json();
         cleaned = await cleanMTAStopsData(busStopData)
         return cleaned

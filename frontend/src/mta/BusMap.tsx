@@ -1,10 +1,10 @@
 // BusMap.js
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
-const BusMap = ({ stops }) => {
-  const mapRef = useRef(null);
+const BusMap = ({ stops }: { stops: any[] }) => {
+  const mapRef = useRef<L.Map | L.LayerGroup<any> | null>(null);
 
   useEffect(() => {
     // Function to check if stops data is valid
@@ -24,13 +24,16 @@ const BusMap = ({ stops }) => {
 
     mapRef.current = L.map('map').setView([stops[0].latitude, stops[0].longitude], 13);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(mapRef.current);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/">CartoDB</a>'
+}).addTo(mapRef.current);
+
 
     // Add markers for each bus stop
     stops.forEach((stop, index) => {
-      L.marker([stop.latitude, stop.longitude]).addTo(mapRef.current).bindPopup(`Stop ${index + 1}: ${stop.name}`);
+      if (mapRef.current) {
+        L.marker([stop.latitude, stop.longitude]).addTo(mapRef.current).bindPopup(`Stop ${index + 1}: ${stop.name}`);
+      }
     });
 
     // Draw polylines between bus stops
@@ -41,7 +44,9 @@ const BusMap = ({ stops }) => {
     mapRef.current.fitBounds(polyline.getBounds());
 
     return () => {
-      mapRef.current.remove();
+      if (mapRef.current) {
+        mapRef.current.remove();
+      }
     };
   }, [stops]);
 
