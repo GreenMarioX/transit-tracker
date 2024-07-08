@@ -1,4 +1,3 @@
-import React from "react";
 import { Separator } from "@/components/ui/separator";
 import { SidebarNav } from "./components/SidebarNav";
 import {
@@ -31,10 +30,6 @@ const sidebarNavItems = [
         href: "/settings/transit-systems",
     },
 ];
-
-interface SettingsLayoutProps {
-    children: React.ReactNode;
-}
 
 export default function SettingsPage() {
     return (

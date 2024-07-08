@@ -9,6 +9,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import SidebarItem from "./SidebarItem";
+import Logout from '../pages/Logout';
 
 const Sidebar = () => {
   const [expanded, setExpanded] = useState(true);
@@ -22,7 +23,7 @@ const Sidebar = () => {
       "/settings/account",
       "/settings/appearance",
       "/settings/notifications",
-      "/settings/display",
+      "/settings/transit-systems",
     ];
     return paths.some((path) => isActive(path));
   };
@@ -95,6 +96,7 @@ const Sidebar = () => {
             />
           </Link>
         </ul>
+        <Logout />
       </SidebarContext.Provider>
 
       <div className="border-t flex p-3">
